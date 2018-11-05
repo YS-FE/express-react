@@ -1,6 +1,8 @@
 {
-  "presets": ["env", "react"],
+  "presets": [
+    ["env", {"modules": false }], "es2015", "es2016", "es2017", "react"],
   "plugins": [
-    "transform-runtime"
+    "transform-runtime",
+    "syntax-dynamic-import"
   ]
 }

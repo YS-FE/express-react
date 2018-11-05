@@ -1,8 +1,8 @@
 const path = require("path");
 const webpack = require("webpack");
 const MFS = require('memory-fs');
-const clientConfig = require("../config/webpack.config.client");
-const serverConfig = require("../config/webpack.config.server");
+const clientConfig = require("./webpack.config.client");
+const serverConfig = require("./webpack.config.server");
 
 module.exports = function setupDevServer(app, callback) {
   let serverEntry;

@@ -6,9 +6,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import App from "./client/App";
 import generatorStore from './client/store';
 
-
 const store = generatorStore(window.REDUX_STATE)
-
 const jsx = (
     <Provider store={ store }>
         <Router>
@@ -16,7 +14,6 @@ const jsx = (
         </Router>
     </Provider> 
 );
-
 ReactDOM.hydrate(jsx, document.getElementById("root"));
 
 

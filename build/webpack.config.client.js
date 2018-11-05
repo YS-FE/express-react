@@ -14,7 +14,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: path.resolve(__dirname, "../dist"),
     filename: "static/js/[name].[chunkhash].js",
-    publicPath: "/dist/"  // 打包后输出路径以/dist/开头
+    publicPath: "/dist/" 
   },
   module: {
     rules: util.styleLoaders({
@@ -26,7 +26,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new HtmlWebpackPlugin({
       filename: "index.html",
-      template: "index.html",
+      template: "src/index.template.html",
       inject: true,
       minify: {
 				removeComments: true,

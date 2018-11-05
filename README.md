@@ -1,26 +1,76 @@
-## React SSR
+# exress-react
+基于 express 服务的 react-ssr
 
-This is a react ssr demo. It base on react16.x and webpack3.x
+# 运行
 
-## Instruction
+```
+dev:    npm run dev
+build:  npm run build
+prod:   npm run start
+```
 
-This is the first chapter of the code
+# 目录结构 
 
-## Available Scripts
-
-### `npm install`
-
-First, run the `npm install` to install dependence
-
-### `npm run dev`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser
-
-### `npm run build`
-
-Builds the app for production
-
-### `npm run start`
-
-Starts the server for production
+```
+├── build   编译打包配置
+│   ├── dev.env.js
+│   ├── prod.env.js
+│   ├── setup-dev-server.js  dev模式服务
+│   ├── util.js
+│   ├── webpack.config.base.js
+│   ├── webpack.config.client.js
+│   └── webpack.config.server.js
+|
+├── config  全局的配置(接口代理等)
+│   └── index.js
+|
+├── dist  打包输出目录
+|
+|
+├── public  静态资源
+│   └── favicon.ico
+|
+├── router   服务端路由
+│   ├── api.js
+│   └── index.js
+|
+├── server.js  服务端入口
+|
+└── src
+    ├── api   数据接口
+    │   ├── config.js
+    │   └── index.js
+    |
+    ├── client  客户端代码
+    │   ├── App.js
+    │   ├── App.scss
+    │   ├── assets
+    │   │   ├── css
+    │   │        └── normalize.css
+    │   │   
+    │   │      
+    │   ├── component
+    │   │   ├── Search
+    │   │   │   ├── index.js
+    │   │   │   └── index.scss
+    │   │   ├── Theater
+    │   │   │   ├── index.js
+    │   │   │   └── index.scss
+    │   │   ├── Top
+    │   │   │   ├── index.js
+    │   │   │   └── index.scss
+    │   │   └── common.scss
+    │   |
+    │   ├── routes.js  客户端路由配置
+    |   |
+    │   └── store
+    │       ├── index.js
+    │       ├── reducers
+    │       │   ├── index.js
+    │       │   └── topMovies.js
+    │       └── types.js
+    |
+    ├── entry-client.js   客户端渲染入口
+    ├── entry-server.js   服务端渲染入口
+    └── index.template.html
+```
