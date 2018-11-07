@@ -4,8 +4,8 @@ const path = require("path");
 const ReactDOMServer = require("react-dom/server");
 const proxy = require('http-proxy-middleware');
 const logger = require('morgan');
-const favicon = require('serve-favicon')
-const compression = require('compression')
+const favicon = require('serve-favicon');
+const compression = require('compression');
 const chalk = require('chalk');
 
 

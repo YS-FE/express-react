@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const chalk = require('chalk');
 
 let env = "dev";
 let isProd = false;
@@ -10,7 +11,10 @@ if (process.env.NODE_ENV === "production") {
   isProd = true;
   prodPlugins = [
     new UglifyJsPlugin({sourceMap: true}),
-    new ProgressBarPlugin({summary: false})
+    new ProgressBarPlugin({
+      format: '  build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+      clear: false
+    })
   ];
 }
 
