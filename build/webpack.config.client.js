@@ -1,7 +1,9 @@
 const path = require("path");
+const webpack = require('webpack');
 const merge = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const { ReactLoadablePlugin } = require('react-loadable/webpack');
 const baseWebpackConfig = require("./webpack.config.base");
 const util = require("./util");
 
@@ -33,6 +35,13 @@ const webpackConfig = merge(baseWebpackConfig, {
 				collapseWhitespace: true,
 				removeAttributeQuotes: true
 			}
+    }),
+    new ReactLoadablePlugin({
+      filename: './dist/react-loadable.json',
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      minChunks: Infinity
     })
   ]
 });

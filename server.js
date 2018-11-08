@@ -7,7 +7,8 @@ const logger = require('morgan');
 const favicon = require('serve-favicon');
 const compression = require('compression');
 const chalk = require('chalk');
-
+const Loadable = require('react-loadable');
+const { getBundles } = require('react-loadable/webpack');
 
 const config = require('./config');
 const {apiRouter} = require('./router');
@@ -57,18 +58,27 @@ if (isProd) {
 
 const render =  async (req, res) => {
   let context = {
-    currURL: req.url
+    currURL: req.url,
+    modules: []
   };
 
   let entry = await serverEntry(context);
   let html = ReactDOMServer.renderToString(entry);
+
+  let stats = require('./dist/react-loadable.json');
+  let bundles = getBundles(stats, context.modules);
+
+  let scripts = bundles.map(bundle => {
+    return `<script src="/dist/${bundle.file}"></script>`
+  }).join('\n');
 
   if (context.url) {
     res.redirect(context.url);
   } else {
     res.render('index', {
       root: html,
-      state: context.state
+      state: context.state,
+      scripts: scripts
     });
   }
 }
@@ -79,7 +89,13 @@ app.get("*", isProd ? render : (req, res) => {
 });
 
 
-app.listen(port, () => {
-  console.log(chalk.green(`\n ✈️ ✈️ server listening on ${port}, open http://localhost:${port} in your browser`));
+// app.listen(port, () => {
+//   console.log(chalk.green(`\n ✈️ ✈️ server listening on ${port}, open http://localhost:${port} in your browser`));
+// });
+
+Loadable.preloadAll().then(() => {
+  app.listen(port, () => {
+    console.log(chalk.green(`\n ✈️ ✈️ server listening on ${port}, open http://localhost:${port} in your browser`));
+  });
 });
 

@@ -1,6 +1,7 @@
 import React from "react";
-import {Provider} from 'react-redux'
-import {StaticRouter, matchPath} from 'react-router-dom'
+import Loadable from 'react-loadable';
+import {Provider} from 'react-redux';
+import {StaticRouter, matchPath} from 'react-router-dom';
 
 import App from "./client/App";
 import  generatorStore  from './client/store';
@@ -47,10 +48,12 @@ module.exports = async (context) => {
 
 
   return (
-    <Provider store={store}>
-    <StaticRouter location={context.srcUrl} context={context}>
-      <App />
-    </StaticRouter>
-    </Provider>
+    // <Loadable.Capture report={moduleName => context.modules.push(moduleName)}>
+      <Provider store={store}>
+          <StaticRouter location={context.srcUrl} context={context}>
+            <App />
+          </StaticRouter>
+      </Provider>
+    // </Loadable.Capture>
   );
 }
