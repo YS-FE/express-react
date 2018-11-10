@@ -1,6 +1,8 @@
 import React from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
-import routes from "./routes";
+
+// import routes from "./routes";
+import routes from "./routes.dev";
 
 import './assets/css/normalize.css';
 import './App.scss';

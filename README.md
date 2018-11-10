@@ -7,7 +7,17 @@
 dev:    npm run dev
 build:  npm run build
 prod:   npm run start
+
 ```
+
+# 问题
+* 切换dev 到prod 模式时 ，需要手动修改 src/client/App.js中 对routes的引入
+
+```js
+// import routes from "./routes";
+import routes from "./routes.dev";
+```
+
 
 # 目录结构 
 
