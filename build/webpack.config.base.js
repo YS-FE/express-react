@@ -56,6 +56,9 @@ const baseWebpackConfig = {
     new webpack.DefinePlugin({
       "process.env": require("./" + env + ".env")
     }),
+    new webpack.ProvidePlugin({
+      "React": "react"
+    }),
     ...prodPlugins
   ]
 }
