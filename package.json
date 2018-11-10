@@ -1,6 +1,6 @@
 {
   "name": "express-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "express-react server side render",
   "main": "server.js",
   "scripts": {
@@ -12,7 +12,9 @@
   },
   "keywords": [
     "express",
-    "react"
+    "react",
+    "react-router",
+    "react-loadable"
   ],
   "dependencies": {
     "axios": "^0.18.0",

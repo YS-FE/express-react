@@ -10,6 +10,7 @@ import {getTop} from './api';
 import config from '../config';
 
 const store = generatorStore();
+const isProd = process.env.NODE_ENV === "production";
 
 module.exports = async (context) => {
 
@@ -25,7 +26,7 @@ module.exports = async (context) => {
     context.state = store.getState();
   }
 
-    /**
+  /**
    * 多个路由都需要预先获取数据 参考如下代码
   
     const promises = [];
@@ -46,14 +47,22 @@ module.exports = async (context) => {
     }
   */
 
+  const Content = () => {
+   return (
+   <Provider store={store}>
+      <StaticRouter location={context.srcUrl} context={context}>
+        <App />
+      </StaticRouter>
+    </Provider>)
+  };
 
-  return (
-    // <Loadable.Capture report={moduleName => context.modules.push(moduleName)}>
-      <Provider store={store}>
-          <StaticRouter location={context.srcUrl} context={context}>
-            <App />
-          </StaticRouter>
-      </Provider>
-    // </Loadable.Capture>
-  );
+  if (isProd) {
+    return (
+      <Loadable.Capture report={moduleName => context.modules.push(moduleName)}>
+        <Content/>
+      </Loadable.Capture>
+    );
+  } else {
+    return <Content/>
+  }
 }

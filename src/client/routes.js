@@ -1,24 +1,27 @@
 import React from 'react';
 import Loadable from 'react-loadable';
-// import Theater from "./component/Theater";
-// import Top from "./component/Top";
-// import Search from "./component/Search";
-
 import {getTop} from '../api';
 
+const Loading=(props)=>{
+    return <div>Loading...</div>
+}
+
 const Theater = Loadable({
-    loader: () => import("./component/Theater"),
-    loading: <div></div>
+    loader: () => import(/* webpackChunkName: "theater" */ "./component/Theater"),
+    loading: Loading,
+    delay: 300
 });
 
 const Top = Loadable({
-    loader: () => import("./component/Top"),
-    loading: <div></div>
+    loader: () => import(/* webpackChunkName: "top" */"./component/Top"),
+    loading: Loading,
+    delay: 300
 });
 
 const Search = Loadable({
-    loader: () => import("./component/Search"),
-    loading: <div></div>
+    loader: () => import(/* webpackChunkName: "search" */"./component/Search"),
+    loading: Loading,
+    delay: 300
 });
 
 

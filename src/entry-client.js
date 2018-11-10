@@ -9,31 +9,37 @@ import generatorStore from './client/store';
 
 const store = generatorStore(window.REDUX_STATE);
 
-const render = (component) => {
-    const modules = [];
+/**
+ * 
+ * @param {Component} Com 
+ * @param {Boolean} isProd 
+ */
+function render(Com, isProd) {
     const jsx = (
-        // <Loadable.Capture report={moduleName => modules.push(moduleName)}>
-            <Provider store={ store }>
-                <Router>
-                    <component/>
-                </Router>
-            </Provider> 
-        // </Loadable.Capture>
+        <Provider store={ store }>
+            <Router>
+                <Com/>
+            </Router>
+        </Provider> 
     );
-    
-    Loadable.preloadReady().then(() => {
-       ReactDOM.hydrate(jsx, document.getElementById("root"));
-    });  
-};
 
-render(App);
+    if (isProd) {
+        Loadable.preloadReady().then(() => {
+            ReactDOM.hydrate(jsx, document.getElementById("root"));
+        });  
+    } else {
+        ReactDOM.hydrate(jsx, document.getElementById("root"));
+    }
+}
+
+render(App, true);
 
 
 // 热更新
 if (module.hot) {
   module.hot.accept("./client/App.js", () => {
     const App = require("./client/App").default;
-    render(App);
+    render(App, false);
   });
 }
 

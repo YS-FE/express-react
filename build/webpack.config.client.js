@@ -15,8 +15,9 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   output: {
     path: path.resolve(__dirname, "../dist"),
-    filename: "static/js/[name].[chunkhash].js",
-    publicPath: "/dist/" 
+    filename: "static/js/[name].[chunkhash:8].js",
+    publicPath: "/dist/" ,
+    chunkFilename: "static/js/[name].[chunkhash:8].js"
   },
   module: {
     rules: util.styleLoaders({
@@ -36,9 +37,6 @@ const webpackConfig = merge(baseWebpackConfig, {
 				removeAttributeQuotes: true
 			}
     }),
-    new ReactLoadablePlugin({
-      filename: './dist/react-loadable.json',
-    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       minChunks: Infinity
@@ -50,6 +48,9 @@ if (isProd) {
   webpackConfig.plugins.push(
     new ExtractTextPlugin({
       filename: "static/css/[name].[contenthash].css"
+    }),
+    new ReactLoadablePlugin({
+      filename: './dist/react-loadable.json',
     })
   );
 }

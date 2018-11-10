@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const fs = require("fs");
 const MFS = require('memory-fs');
 const clientConfig = require("./webpack.config.client");
 const serverConfig = require("./webpack.config.server");
@@ -78,8 +79,11 @@ module.exports = function setupDevServer(app, callback) {
 
     // 读取打包后的内容并编译模块
     const bundle = readFile(mfs, "entry-server.js");
+    
+    // nodejs  动态加载模块的一种方式
     const m = new module.constructor();
     m._compile(bundle, "entry-server.js");
+
     serverEntry = m.exports;
     update();
   });

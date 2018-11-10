@@ -36,6 +36,8 @@ prod:   npm run start
 |
 ├── server.js  服务端入口
 |
+|── temp  临时目录
+|
 └── src
     ├── api   数据接口
     │   ├── config.js

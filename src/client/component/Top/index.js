@@ -38,6 +38,7 @@ const mapStateToProps = (state, props) => {
 
 
 const Top = connect(mapStateToProps)(_Top);
+
 export default  Top;
 
 

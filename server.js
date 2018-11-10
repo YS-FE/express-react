@@ -15,6 +15,7 @@ const {apiRouter} = require('./router');
 
 const app = express();
 
+
 // 配置代理
 Object.keys(config.proxyTables).forEach(key => {
   app.use(proxy(key, config.proxyTables[key]));
@@ -22,41 +23,45 @@ Object.keys(config.proxyTables).forEach(key => {
 
 
 app.use(favicon('./public/favicon.ico'));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 app.use(compression({ threshold: 0 }))
+app.use(logger('dev'));
+
 app.use("/dist", express.static(path.join(__dirname, "./dist")));
 app.use("/public", express.static(path.join(__dirname, "./public")));
 
-app.set('views', path.join(__dirname, './dist'));
 app.engine('.html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(logger('dev'));
 
 
+//接口路由
 app.use('/api', apiRouter);
 
 const isProd = process.env.NODE_ENV === "production";
-const port = process.env.PORT || 8888;
+const port = process.env.PORT || 8881;
+let serverEntry, template, readyPromise, loadableJson;
 
-let serverEntry;
-let template;
-let readyPromise;
 
 if (isProd) {
+  app.set('views', path.join(__dirname, './dist'));
+  loadableJson = require('./dist/react-loadable.json');
   serverEntry = require("./dist/entry-server");
-  template = fs.readFileSync("./dist/index.html", "utf-8");
 } else {
+  app.set('views', path.join(__dirname, './temp'));
   readyPromise = require("./build/setup-dev-server")(app, (entry, htmlTemplate) => {
     serverEntry = entry;
     template = htmlTemplate;
+    fs.writeFileSync(path.join(__dirname, '/temp/index.html'), template, "utf8");
   });
 }
 
 
+/**
+ * 服务渲染中间件 
+ */
 const render =  async (req, res) => {
+  let scripts = '';
   let context = {
     currURL: req.url,
     modules: []
@@ -65,12 +70,12 @@ const render =  async (req, res) => {
   let entry = await serverEntry(context);
   let html = ReactDOMServer.renderToString(entry);
 
-  let stats = require('./dist/react-loadable.json');
-  let bundles = getBundles(stats, context.modules);
-
-  let scripts = bundles.map(bundle => {
-    return `<script src="/dist/${bundle.file}"></script>`
-  }).join('\n');
+  if (isProd) {
+    let bundles = getBundles(loadableJson, context.modules);
+    scripts = bundles.map(bundle => {
+      return `<script src="/dist/${bundle.file}"></script>`
+    }).join('\n');
+  }
 
   if (context.url) {
     res.redirect(context.url);
@@ -81,21 +86,25 @@ const render =  async (req, res) => {
       scripts: scripts
     });
   }
-}
-
+};
 
 app.get("*", isProd ? render : (req, res) => {
 	readyPromise.then(() => render(req, res));
 });
 
-
-// app.listen(port, () => {
-//   console.log(chalk.green(`\n ✈️ ✈️ server listening on ${port}, open http://localhost:${port} in your browser`));
-// });
-
-Loadable.preloadAll().then(() => {
+const listener = (app, port) => {
   app.listen(port, () => {
     console.log(chalk.green(`\n ✈️ ✈️ server listening on ${port}, open http://localhost:${port} in your browser`));
   });
-});
+};
+
+if (isProd) {
+  Loadable.preloadAll().then(() => {
+    listener(app, port);
+  });
+} else {
+  listener(app, port);
+}
+
+
 

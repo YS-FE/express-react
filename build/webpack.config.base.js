@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const baseWebpackConfig = {
-  devtool: isProd ? "#source-map" : "#cheap-module-source-map",
+  devtool: false,
   resolve: {
     extensions: [".js", ".jsx", ".json"]
   },
