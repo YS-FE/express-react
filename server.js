@@ -39,7 +39,7 @@ app.set('view engine', 'html');
 app.use('/api', apiRouter);
 
 const isProd = process.env.NODE_ENV === "production";
-const port = process.env.PORT || 8881;
+const port = process.env.PORT || 8888;
 let serverEntry, template, readyPromise, loadableJson;
 
 
